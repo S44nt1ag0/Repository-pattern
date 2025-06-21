@@ -24,6 +24,21 @@ class BookController {
       return res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  updateBook = async (req: Request, res: Response) => {
+
+    if(req.body.title && await this.bookRepository.findByTitle(req.body.title)) {
+      return res.status(400).json({ error: "Book already exists" });
+    }
+
+    const book = await this.bookRepository.update(req.params.id, req.body);
+    res.json(book);
+  };
+
+  deleteBook = async (req: Request, res: Response) => {
+    const book = await this.bookRepository.delete(req.params.id);
+    res.json(book);
+  };
 }
 
 export default new BookController();
