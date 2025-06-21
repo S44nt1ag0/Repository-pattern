@@ -136,3 +136,4 @@ out/
 # Temporary folders
 tmp/
 temp/ 
+/src/generated/prisma
