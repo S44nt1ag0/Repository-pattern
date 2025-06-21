@@ -4,6 +4,7 @@ import BookController from "./controllers/BookController";
 const router = Router();
 
 router.get("/", HomeController.index);
-router.get("/books", BookController.findAll);
+router.get("/v1/books", BookController.findAll);
+router.post("/v1/books", BookController.addBook);
 
 export default router;

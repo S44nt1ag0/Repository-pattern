@@ -10,6 +10,11 @@ class BookController {
   }
 
   addBook = async (req: Request, res: Response) => {
+
+    if(!req.body.title || !req.body.author || !req.body.price) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    
     const book = await this.bookRepository.create(req.body);
     res.json(book);
   }

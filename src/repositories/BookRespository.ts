@@ -15,7 +15,19 @@ export class BookRepository implements IBookRepository {
         return books;
     }
 
+    async findByTitle(title: string): Promise<IBook | null> {
+        const book = await prisma.book.findFirst({
+            where: { title }
+        });
+        return book;
+    }
+
     async create(book: IBook): Promise<IBook> {
+
+        if(await this.findByTitle(book.title)) {
+            throw new Error("Book already exists");
+        }
+
         const newBook = await prisma.book.create({
             data: book
         });
