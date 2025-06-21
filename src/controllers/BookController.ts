@@ -36,8 +36,15 @@ class BookController {
   };
 
   deleteBook = async (req: Request, res: Response) => {
-    const book = await this.bookRepository.delete(req.params.id);
-    res.json(book);
+    try{
+      const book = await this.bookRepository.delete(req.params.id);
+      res.json({success: book});
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
   };
 }
 

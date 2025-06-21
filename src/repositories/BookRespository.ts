@@ -42,6 +42,11 @@ export class BookRepository implements IBookRepository {
   }
 
   async delete(id: string): Promise<boolean> {
+
+    if(!await this.findById(id)) {
+      throw new Error("Book not found");
+    }
+
     try {
       await prisma.book.delete({
         where: { id },
