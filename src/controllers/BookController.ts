@@ -7,18 +7,23 @@ class BookController {
   findAll = async (req: Request, res: Response) => {
     const books = await this.bookRepository.findAll();
     res.json(books);
-  }
+  };
 
   addBook = async (req: Request, res: Response) => {
+    try {
+      if (!req.body.title || !req.body.author || !req.body.price) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
 
-    if(!req.body.title || !req.body.author || !req.body.price) {
-      return res.status(400).json({ error: "Missing required fields" });
+      const book = await this.bookRepository.create(req.body);
+      res.json(book);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ error: error.message });
+      }
+      return res.status(500).json({ error: "Internal server error" });
     }
-    
-    const book = await this.bookRepository.create(req.body);
-    res.json(book);
-  }
-
+  };
 }
 
 export default new BookController();
